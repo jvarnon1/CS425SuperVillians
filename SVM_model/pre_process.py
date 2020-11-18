@@ -19,4 +19,5 @@ for column in data:
      #   print(column, ": ", feature.nunique())
 # for now drop the object type column features
 data = data.drop(columns = ['author_id', 'submission_title', 'submission_link', 'link_flair_text'])
-data.info()
+#data.info()
+
