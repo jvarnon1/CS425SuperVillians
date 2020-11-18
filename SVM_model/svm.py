@@ -108,7 +108,7 @@ for score in scores:
         print("%0.3f (+/-%0.03f) for %r"
             % (mean, std * 2, params))
     print()
-
+    '''
     print("Detailed classification report:")
     print()
     print("The model is trained on the full development set.")
@@ -117,7 +117,7 @@ for score in scores:
     y_true, y_pred = y_test, clf.predict(x_test)
     print(classification_report(y_true, y_pred))
     print()
-
+    '''
 # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Fine Grid Search                                #
 #   - A more detailed sweep of hyperparemeters.   #
