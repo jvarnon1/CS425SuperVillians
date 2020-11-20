@@ -65,59 +65,60 @@ predicted_rbf_four = rbf_svc_four.predict(x_test)
 # Coarse Grid Search                    #
 #   - Broad sweep of hyperparemeters.   #
 # # # # # # # # # # # # # # # # # # # # #
-
+'''
     # Set the parameters by cross-validation
-tuned_parameters = [
-    {
-        'kernel': ['linear'], 
-        'C': [1, 10, 100, 1000]
-    },
-    {
-        'kernel': ['poly'], 
-        'degree': [2, 3, 4],
-        'C': [1, 10, 100, 1000]
-    },
-    {
-        'kernel': ['rbf'], 
-        'gamma': [1e-3, 1e-4],
-        'C': [1, 10, 100, 1000]
-    }
-]
+
+    tuned_parameters = [
+        {
+            'kernel': ['linear'], 
+            'C': [1, 10, 100, 1000]
+        },
+        {
+            'kernel': ['poly'], 
+            'degree': [2, 3, 4],
+            'C': [1, 10, 100, 1000]
+        },
+        {
+            'kernel': ['rbf'], 
+            'gamma': [1e-3, 1e-4],
+            'C': [1, 10, 100, 1000]
+        }
+    ]
 
 
-scores = ['precision', 'recall']
+    scores = ['precision', 'recall']
 
-for score in scores:
-    print("# Tuning hyper-parameters for %s" % score)
-    print()
+    for score in scores:
+        print("# Tuning hyper-parameters for %s" % score)
+        print()
 
-    clf = GridSearchCV(
-        SVC(), tuned_parameters, scoring='%s_macro' % score
-    )
-    clf.fit(x_train, y_train)
+        clf = GridSearchCV(
+            SVC(), tuned_parameters, scoring='%s_macro' % score
+        )
+        clf.fit(x_train, y_train)
 
-    print("Best parameters set found on development set:")
-    print()
-    print(clf.best_params_)
-    print()
-    print("Grid scores on development set:")
-    print()
-    means = clf.cv_results_['mean_test_score']
-    stds = clf.cv_results_['std_test_score']
-    for mean, std, params in zip(means, stds, clf.cv_results_['params']):
-        print("%0.3f (+/-%0.03f) for %r"
-            % (mean, std * 2, params))
-    print()
-    '''
-    print("Detailed classification report:")
-    print()
-    print("The model is trained on the full development set.")
-    print("The scores are computed on the full evaluation set.")
-    print()
-    y_true, y_pred = y_test, clf.predict(x_test)
-    print(classification_report(y_true, y_pred))
-    print()
-    '''
+        print("Best parameters set found on development set:")
+        print()
+        print(clf.best_params_)
+        print()
+        print("Grid scores on development set:")
+        print()
+        means = clf.cv_results_['mean_test_score']
+        stds = clf.cv_results_['std_test_score']
+        for mean, std, params in zip(means, stds, clf.cv_results_['params']):
+            print("%0.3f (+/-%0.03f) for %r"
+                % (mean, std * 2, params))
+        print()
+        
+        print("Detailed classification report:")
+        print()
+        print("The model is trained on the full development set.")
+        print("The scores are computed on the full evaluation set.")
+        print()
+        y_true, y_pred = y_test, clf.predict(x_test)
+        print(classification_report(y_true, y_pred))
+        print()
+'''    
 # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Fine Grid Search                                #
 #   - A more detailed sweep of hyperparemeters.   #
@@ -125,9 +126,9 @@ for score in scores:
 '''
     # Set the parameters by cross-validation
     tuned_parameters = {
-        'kernel': ['rbf'], 
-        'gamma': [1e-1, 1e-2, 1e-3],
-        'C': [10, 50, 100, 500, 1000]
+        'kernel': ['poly'], 
+        'degree': [2, 4],
+        'C': [1, 5, 10, 100]
         }
 
 
@@ -154,13 +155,88 @@ for score in scores:
             print("%0.3f (+/-%0.03f) for %r"
                 % (mean, std * 2, params))
         print()
+'''
+# # # # # # # # # # # # # # # # # # # # # # # # # #
+# Fine Grid Search  2                             #
+#   - A more detailed sweep of hyperparemeters.   #
+# # # # # # # # # # # # # # # # # # # # # # # # # #
+'''
+    # Set the parameters by cross-validation
+    tuned_parameters = {
+        'kernel': ['poly'], 
+        'degree': [2, 4],
+        'C': [1, 50, 100]
+        }
 
-        print("Detailed classification report:")
+
+    scores = ['precision', 'recall']
+
+    for score in scores:
+        print("# Tuning hyper-parameters for %s" % score)
         print()
-        print("The model is trained on the full development set.")
-        print("The scores are computed on the full evaluation set.")
+
+        clf = GridSearchCV(
+            SVC(), tuned_parameters, scoring='%s_macro' % score
+        )
+        clf.fit(x_train, y_train)
+
+        print("Best parameters set found on development set:")
         print()
-        y_true, y_pred = y_test, clf.predict(x_test)
-        print(classification_report(y_true, y_pred))
+        print(clf.best_params_)
+        print()
+        print("Grid scores on development set:")
+        print()
+        means = clf.cv_results_['mean_test_score']
+        stds = clf.cv_results_['std_test_score']
+        for mean, std, params in zip(means, stds, clf.cv_results_['params']):
+            print("%0.3f (+/-%0.03f) for %r"
+                % (mean, std * 2, params))
         print()
 '''
+# # # # # # # # # # # # # # # # # # # # # # # # # #
+# Fine Grid Search  3                             #
+#   - A more detailed sweep of hyperparemeters.   #
+# # # # # # # # # # # # # # # # # # # # # # # # # #
+
+# Set the parameters by cross-validation
+tuned_parameters = {
+    'kernel': ['poly'], 
+    'degree': [2],
+    'C': [10, 20, 30, 40]
+    }
+
+
+scores = ['precision', 'recall']
+
+for score in scores:
+    #print("# Tuning hyper-parameters for %s" % score)
+    #print()
+
+    clf = GridSearchCV(
+        SVC(), tuned_parameters, scoring='%s_macro' % score
+    )
+    clf.fit(x_train, y_train)
+    
+    print("Best parameters set found on development set:")
+    print()
+    print(clf.best_params_)
+    print()
+    '''
+    print("Grid scores on development set:")
+    print()
+    means = clf.cv_results_['mean_test_score']
+    stds = clf.cv_results_['std_test_score']
+    for mean, std, params in zip(means, stds, clf.cv_results_['params']):
+        print("%0.3f (+/-%0.03f) for %r"
+            % (mean, std * 2, params))
+    print()
+    '''    
+    print("Detailed classification report:")
+    print()
+    print("The model is trained on the full development set.")
+    print("The scores are computed on the full evaluation set.")
+    print()
+    y_true, y_pred = y_test, clf.predict(x_test)
+    print(classification_report(y_true, y_pred))
+    print()
+    
