@@ -9,6 +9,7 @@ from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 import seaborn as sn
+from matplotlib.pyplot import figure
 
 # Using only features with numeric values
 features = ['author_total_karma', 'author_has_verified_email',
@@ -82,12 +83,14 @@ for score in scores:
 # Using depth of 7 as that was the most common one when training from multiple datasets
 precision_clf = tree.DecisionTreeClassifier(max_depth=7, criterion=precision_criterion)
 precision_clf = precision_clf.fit(X_train, y_train)
-tree.plot_tree(precision_clf, feature_names=features, class_names=["Reliable", "Non-reliable"])
+fig, ax = plt.subplots(figsize=(17,11))
+tree.plot_tree(precision_clf, max_depth=7, feature_names=features, class_names=["Reliable", "Non-reliable"], fontsize=10)
 plt.show()
 
 recall_clf = tree.DecisionTreeClassifier(max_depth=7, criterion=recall_criterion)
 recall_clf = recall_clf.fit(X_train, y_train)
-tree.plot_tree(recall_clf, feature_names=features, class_names=["Reliable", "Non-reliable"])
+fig, ax = plt.subplots(figsize=(17,11))
+tree.plot_tree(recall_clf, max_depth=7, feature_names=features, class_names=["Reliable", "Non-reliable"], fontsize=10)
 plt.show()
 
 precision_predictions = precision_clf.predict(X_test)
@@ -95,6 +98,8 @@ recall_predictions = recall_clf.predict(X_test)
 
 # Make confusion matrices from predicted data
 f, axes = plt.subplots(1, 2)
+f.set_figheight(5)
+f.set_figwidth(12)
 
 tn, fp, fn, tp = confusion_matrix(y_test, precision_predictions).ravel()
 array = [[tn, fp],
@@ -104,7 +109,7 @@ df = pd.DataFrame(array, range(2), range(2))
 sn.set(font_scale=1.4) # for label size
 sn.heatmap(df, fmt="d", annot=True, annot_kws={"size": 16}, vmin=0, vmax=15, ax=axes[0], cmap="mako") # font size
 axes[0].set_title("Precision Optimized Decision Tree")
-axes[0].set(xlabel='Precited Values', ylabel='Actual Values')
+axes[0].set(xlabel='Predicted Values', ylabel='Actual Values')
 print("Accuracy for precision tree:")
 print(accuracy_score(y_test, precision_predictions))
 
@@ -116,7 +121,7 @@ df2 = pd.DataFrame(array, range(2), range(2))
 sn.set(font_scale=1.4) # for label size
 sn.heatmap(df2, fmt="d", annot=True, annot_kws={"size": 16}, vmin=0, vmax=15, ax=axes[1], cmap="mako") # font size
 axes[1].set_title("Recall Optimized Decision Tree")
-axes[1].set(xlabel='Precited Values', ylabel='Actual Values')
+axes[1].set(xlabel='Predicted Values', ylabel='Actual Values')
 print("Accuracy for recall tree:")
 print(accuracy_score(y_test, recall_predictions))
 
